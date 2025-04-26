@@ -1,0 +1,42 @@
+.env
+db.sqlite3
+
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+.venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+
+# Django
+*.log
+*.pot
+*.pyc
+*.mo
+*.sqlite3
+db.sqlite3
+
+# Environments
+.env
+.env.*
+
+# VS Code, PyCharm, etc.
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
