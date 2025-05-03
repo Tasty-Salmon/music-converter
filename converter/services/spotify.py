@@ -13,6 +13,33 @@ secret = os.getenv("SPOTIFY_CLIENT_SECRET")
 
 #reusable helper functions
 
+def get_all_songs():
+    #returns nested dictionary of songs.
+    #{'playlist': {'id': 123, 'tracks': {'song name': 'song id'}}}
+
+    access_token = get_access_token()
+    headers = {
+        'Authorization': f"Bearer {access_token}"
+    }
+
+    playlists = get_private_playlist_ids(access_token)
+
+    for name, data in playlists.items():
+        id = data['id']
+        url = f'https://api.spotify.com/v1/playlists/{id}/tracks'
+
+        r = requests.get(url, headers=headers)
+        r = r.json()
+        
+        for item in r['items']:
+            song_name = item['track']['name']
+            song_id = item['track']['id']
+            playlists[name]['tracks'][song_name] = song_id
+    
+    return playlists
+
+
+
 def get_private_playlist_ids(access_token):
 #returns array of all playlists
 
@@ -32,34 +59,9 @@ def get_private_playlist_ids(access_token):
         id = item['id']
         playlists[name] = {
             'id': id,
-            'tracks': []
+            'tracks': {}
             }
-
-    return playlists
-
-
-def get_all_songs():
-    #returns nested dictionary of songs.
-    #{'playlist': {'id': 123, 'tracks': ['abc','xyz']}}
-
-    access_token = get_access_token()
-    headers = {
-        'Authorization': f"Bearer {access_token}"
-    }
-
-    playlists = get_private_playlist_ids(access_token)
-
-    for name, data in playlists.items():
-        id = data['id']
-        url = f'https://api.spotify.com/v1/playlists/{id}/tracks'
-
-        r = requests.get(url, headers=headers)
-        r = r.json()
-        
-        for item in r['items']:
-            song_name = item['track']['name']
-            playlists[name]['tracks'].append(song_name)
-    print(playlists)
+    #print(playlists)
     return playlists
 
 
@@ -89,7 +91,7 @@ def get_access_token():
 if __name__ == "__main__":
    #obtain_auth_code()
    #exchange_code_for_token()
-   
+   #get_private_playlist_ids(get_access_token())
    get_all_songs()
 
 #one-time use functions to obtain refresh token in spotify authorization code flow

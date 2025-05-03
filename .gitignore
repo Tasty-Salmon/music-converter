@@ -32,6 +32,7 @@ db.sqlite3
 # Environments
 .env
 .env.*
+oauth.json
 
 # VS Code, PyCharm, etc.
 .vscode/
